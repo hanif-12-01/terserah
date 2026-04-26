@@ -1,4 +1,4 @@
-package monsterinn.Monster.Inn;
+package monsterinn;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
