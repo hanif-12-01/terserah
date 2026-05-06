@@ -1,37 +1,32 @@
 package monsterinn.modules.monster.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@DiscriminatorValue("EARTH")
 public class EarthMonster extends Monster {
-    private double soilNutrientCost; // Biaya tambahan nutrisi tanah
+    private double soilNutrientCost;
 
-    // Constructor
     public EarthMonster(String idMonster, String name, double baseCost, double soilNutrientCost) {
         super(idMonster, name, baseCost);
         this.soilNutrientCost = soilNutrientCost;
     }
 
-    // Override calculateTotalCost - Formula Tanah
-    // Total = (baseCost + soilNutrientCost) * stayDays
     @Override
     public double calculateTotalCost() {
-        return (baseCost + soilNutrientCost) * stayDays;
+        // Total = (Base + Nutrisi) * Hari + Extra (Layanan)
+        return ((baseCost + soilNutrientCost) * stayDays) + extraCost;
     }
 
     @Override
     public String getDetail() {
-        return super.getDetail() +
-               " | Elemen: EARTH" +
-               " | Soil Nutrient Cost: Rp" + soilNutrientCost +
-               " | Total Cost: Rp" + calculateTotalCost();
+        return super.getDetail() + String.format(" | Elemen: EARTH | Total: Rp%.2f", calculateTotalCost());
     }
 }

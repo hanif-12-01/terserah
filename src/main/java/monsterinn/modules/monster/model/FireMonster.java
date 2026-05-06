@@ -1,37 +1,32 @@
 package monsterinn.modules.monster.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@DiscriminatorValue("FIRE")
 public class FireMonster extends Monster {
-    private double thermalSurcharge; // Biaya tambahan panas/api
+    private double thermalSurcharge;
 
-    // Constructor
     public FireMonster(String idMonster, String name, double baseCost, double thermalSurcharge) {
         super(idMonster, name, baseCost);
         this.thermalSurcharge = thermalSurcharge;
     }
 
-    // Override calculateTotalCost - Formula Api
-    // Total = (baseCost + thermalSurcharge) * stayDays
     @Override
     public double calculateTotalCost() {
-        return (baseCost + thermalSurcharge) * stayDays;
+        // Total = (Base + Thermal) * Hari + Extra (Layanan)
+        return ((baseCost + thermalSurcharge) * stayDays) + extraCost;
     }
 
     @Override
     public String getDetail() {
-        return super.getDetail() +
-               " | Elemen: FIRE" +
-               " | Thermal Surcharge: Rp" + thermalSurcharge +
-               " | Total Cost: Rp" + calculateTotalCost();
+        return super.getDetail() + String.format(" | Elemen: FIRE | Total: Rp%.2f", calculateTotalCost());
     }
 }

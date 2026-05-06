@@ -1,51 +1,59 @@
 package monsterinn.modules.monster.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
-@EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
-@AllArgsConstructor
-@MappedSuperclass
-@Table (name = "monsters")
+@Data// Lombok untuk generate getter, setter, toString, equals, hashCode
+@NoArgsConstructor // Lombok untuk generate constructor tanpa argumen
+@Entity// Kelas abstrak untuk monster, dengan strategi inheritance SINGLE_TABLE
+@Table(name = "monsters") // Nama tabel untuk menyimpan semua jenis monster
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Semua jenis monster disimpan dalam satu tabel dengan kolom discriminator
+@DiscriminatorColumn(name = "element_type")
 public abstract class Monster {
 
     @Id
-    protected String idMonster ;
-    protected String name;
-    protected double baseCost;
-    protected double extraCost;
-    protected String roomId;
-    protected int stayDays;
-    protected double prepaidAmount;
+    protected String idMonster; // ID unik untuk setiap monster (misal: "M001", "M002", "M003")
+    protected String name; // Nama monster (misal: "Golem", "Salamander", "Leviathan")
+    protected double baseCost; // Biaya dasar per hari
+    protected double extraCost = 0; // Akumulasi Layanan Kamar
+    protected String roomId; // ID kamar yang ditempati monster (relasi ke modul room)
+    protected int stayDays = 1; // Lama menginap dalam hari (default 1 hari)
+    protected double prepaidAmount = 0; // Jumlah uang muka yang sudah dibayar oleh pelanggan
 
-    // Constructor
+    // List untuk menyimpan catatan layanan (Service Log)
+    @ElementCollection
+    protected List<String> serviceLog = new ArrayList<>();
+
+    // Constructor Dasar
     public Monster(String idMonster, String name, double baseCost) {
         this.idMonster = idMonster;
         this.name = name;
         this.baseCost = baseCost;
-        this.extraCost = 0;
-        this.stayDays = 1;
-        this.prepaidAmount = 0;
     }
 
-    // Method getDetail
+    // --- 4 METHOD ---
+
+    // 1.getDetail(): Output informasi dasar
     public String getDetail() {
-        return "ID: " + idMonster + " | Nama: " + name +
-               " Base Cost: Rp" + baseCost;
+        return String.format("ID: %s | Nama: %s | Base: Rp%.2f", idMonster, name, baseCost);
     }
 
-    // Polymorphic Method - wajib di-override tiap subclass
-    public abstract double calculateTotalCost();
+    // 2. pushService(): Menambah biaya layanan (Koneksi ke modul Dzaki)
+    public void pushService(String message, double fee) {
+        this.extraCost += fee;
+        this.serviceLog.add(message + " (Rp" + fee + ")");
+    }
 
-    // Validate state sederhana
+    // 3. validateState(): Validasi data sebelum simpan ke DB
     public boolean validateState() {
-        return idMonster != null && !idMonster.isEmpty()
-            && name != null && !name.isEmpty()
+        return idMonster != null && !idMonster.isEmpty() 
+            && name != null && !name.isEmpty() 
             && baseCost > 0;
     }
+
+    // 4. calculateTotalCost(): Method Polimorfik (Abstract)
+    public abstract double calculateTotalCost();
 }
