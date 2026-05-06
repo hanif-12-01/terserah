@@ -26,6 +26,11 @@ public class EarthMonster extends Monster {
     }
 
     @Override
+    public String getElement() {
+        return "EARTH";
+    }
+
+    @Override
     public String getDetail() {
         return super.getDetail() + String.format(" | Elemen: EARTH | Total: Rp%.2f", calculateTotalCost());
     }

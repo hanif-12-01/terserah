@@ -56,4 +56,7 @@ public abstract class Monster {
 
     // 4. calculateTotalCost(): Method Polimorfik (Abstract)
     public abstract double calculateTotalCost();
+
+    // 5. getElement(): Method Polimorfik (Abstract)
+    public abstract String getElement();
 }

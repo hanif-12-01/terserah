@@ -25,6 +25,12 @@ public class FireMonster extends Monster {
         return ((baseCost + thermalSurcharge) * stayDays) + extraCost;
     }
 
+
+    @Override
+    public String getElement() {
+        return "FIRE";
+    }
+
     @Override
     public String getDetail() {
         return super.getDetail() + String.format(" | Elemen: FIRE | Total: Rp%.2f", calculateTotalCost());

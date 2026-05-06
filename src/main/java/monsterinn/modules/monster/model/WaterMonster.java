@@ -26,6 +26,11 @@ public class WaterMonster extends Monster {
     }
 
     @Override
+    public String getElement() {
+        return "WATER";
+    }
+
+    @Override
     public String getDetail() {
         return super.getDetail() + String.format(" | Elemen: WATER | Total: Rp%.2f", calculateTotalCost());
     }
