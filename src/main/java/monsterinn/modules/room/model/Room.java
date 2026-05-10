@@ -13,7 +13,7 @@ public class Room {
 
     @Id
     private String roomId;
-    private String elementCap; // Isi: Api, Air, atau Tanah
+    private String elementCap; // Isi: FIRE, WATER, atau EARTH
     private double roomRate;
     private boolean isOccupied = false;
 
@@ -49,6 +49,9 @@ public class Room {
     }
 
     public void checkOut() {
+        if (this.status != RoomStatus.OCCUPIED || this.currentGuest == null) {
+            throw new IllegalStateException("Kamar tidak sedang ditempati!");
+        }
         this.currentGuest = null;
         this.isOccupied = false;
         this.status = RoomStatus.DIRTY;
