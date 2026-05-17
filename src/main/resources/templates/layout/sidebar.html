@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="monster-sidebar" class="mi-sidebar flex flex-col" style="
+    width: 260px;
+    min-height: 100vh;
+    background: #0a0408;
+    border-right: 4px solid #3a2e28;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    font-family: 'Press Start 2P', monospace;
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    z-index: 50;
+">
+    <!-- Logo -->
+    <div style="padding: 24px 20px; border-bottom: 4px solid #3a2e28; background: #050208;">
+        <div style="font-family: 'Press Start 2P', monospace; font-size: 13px; color: #ffd96b; text-shadow: 2px 2px 0 #000; letter-spacing: 1px;">
+            🏨 MONSTER INN
+        </div>
+        <div style="font-family: 'VT323', monospace; font-size: 16px; color: #9c7ac4; margin-top: 6px;">
+            Front Desk Terminal
+        </div>
+    </div>
+
+    <!-- Nav Links -->
+    <div style="flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px;">
+
+        <a th:href="@{/dashboard}" style="
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px;
+            color: #f4e8d0;
+            text-decoration: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+            transition: all 0.15s;
+        "
+        onmouseover="this.style.background='#1e1825'; this.style.borderColor='#3a2e28'; this.style.color='#ffd96b';"
+        onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'; this.style.color='#f4e8d0';">
+            <span>📊</span> OVERVIEW
+        </a>
+
+        <a th:href="@{/room/status}" style="
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px;
+            color: #f4e8d0;
+            text-decoration: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+            transition: all 0.15s;
+        "
+        onmouseover="this.style.background='#1e1825'; this.style.borderColor='#3a2e28'; this.style.color='#ffd96b';"
+        onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'; this.style.color='#f4e8d0';">
+            <span>🏨</span> STATUS KAMAR
+        </a>
+
+        <a th:href="@{/registrasi}" style="
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px;
+            color: #f4e8d0;
+            text-decoration: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+        "
+        onmouseover="this.style.background='#1e1825'; this.style.borderColor='#3a2e28'; this.style.color='#ffd96b';"
+        onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'; this.style.color='#f4e8d0';">
+            <span>📋</span> REGISTRASI
+        </a>
+
+        <a th:href="@{/layanan}" style="
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px;
+            color: #f4e8d0;
+            text-decoration: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+        "
+        onmouseover="this.style.background='#1e1825'; this.style.borderColor='#3a2e28'; this.style.color='#ffd96b';"
+        onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'; this.style.color='#f4e8d0';">
+            <span>✨</span> LAYANAN
+        </a>
+
+        <a th:href="@{/checkout}" style="
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px;
+            color: #f4e8d0;
+            text-decoration: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+        "
+        onmouseover="this.style.background='#1e1825'; this.style.borderColor='#3a2e28'; this.style.color='#ffd96b';"
+        onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'; this.style.color='#f4e8d0';">
+            <span>💰</span> CHECKOUT
+        </a>
+
+        <a th:href="@{/laporan}" style="
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px;
+            color: #f4e8d0;
+            text-decoration: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+        "
+        onmouseover="this.style.background='#1e1825'; this.style.borderColor='#3a2e28'; this.style.color='#ffd96b';"
+        onmouseout="this.style.background='transparent'; this.style.borderColor='transparent'; this.style.color='#f4e8d0';">
+            <span>📊</span> LAPORAN
+        </a>
+    </div>
+
+    <!-- Logout -->
+    <div style="padding: 16px 12px; border-top: 4px solid #3a2e28;">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" style="
+                width: 100%;
+                display: flex; align-items: center; gap: 12px;
+                padding: 12px 14px;
+                background: transparent;
+                color: #e8734a;
+                font-family: 'Press Start 2P', monospace;
+                font-size: 8px;
+                letter-spacing: 1px;
+                border: 2px solid #e8734a;
+                cursor: pointer;
+                transition: all 0.15s;
+            "
+            onmouseover="this.style.background='#e8734a'; this.style.color='#000';"
+            onmouseout="this.style.background='transparent'; this.style.color='#e8734a';">
+                <span>🚪</span> LOGOUT
+            </button>
+        </form>
+    </div>
+</nav>
+</body>
+</html>

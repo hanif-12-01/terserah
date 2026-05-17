@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/monster-inn-ui.css}">
+    <th:block th:replace="~{layout/monster-style :: monster-style}"></th:block>
+    <title>Laporan Harian — Monster Inn</title>
+    <style>
+        body { background: #0f0b14; color: #f4e8d0; font-family: 'Pixelify Sans', sans-serif; image-rendering: pixelated; }
+        .pixel-card { background: #1e1825; border: 4px solid #3a2e28; box-shadow: 6px 6px 0px #000; }
+        .text-pixel { font-family: 'Press Start 2P', monospace; }
+        .text-retro { font-family: 'VT323', monospace; }
+        
+        .bar-container { background: #050208; border: 2px solid #3a2e28; height: 20px; width: 100%; position: relative; }
+        .bar-fill { height: 100%; transition: width 1s ease-in-out; box-shadow: inset 0 2px 0 rgba(255,255,255,0.2); }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0b14; }
+        ::-webkit-scrollbar-thumb { background: #3a2e28; }
+    </style>
+</head>
+<body class="mi-app-shell flex min-h-screen">
+
+    <div th:replace="~{layout/sidebar :: monster-sidebar}"></div>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <header class="mb-10 border-b-4 border-[#3a2e28] pb-6 flex justify-between items-end">
+            <div>
+                <div class="text-[#c08800] text-xs text-pixel mb-2 uppercase">✦ Rekapitulasi Operasional</div>
+                <h2 class="text-pixel text-xl text-[#ffd96b]">LAPORAN HARIAN</h2>
+                <p class="text-retro text-xl text-[#9c7ac4] mt-1 italic">Analisis performa penginapan antar-dimensi.</p>
+            </div>
+            <button onclick="window.print()" class="bg-[#85a67a] border-4 border-[#3a2e28] text-[#3a2e28] px-6 py-2 text-pixel text-[8px] shadow-[4px_4px_0px_#000] hover:bg-[#b5d4a8] active:translate-y-1 active:shadow-none transition-all">
+                EXPORT DATA
+            </button>
+        </header>
+
+        <div class="grid grid-cols-3 gap-8 mb-10">
+            <div class="pixel-card p-6 border-b-4 border-b-[#ffd96b]">
+                <p class="text-pixel text-[7px] text-[#9c7ac4] mb-3 uppercase">Pendapatan Emas</p>
+                <p class="text-retro text-3xl text-[#ffd96b] font-bold" 
+                   th:text="'Rp ' + ${#numbers.formatDecimal(revenue, 0, 'POINT', 0, 'COMMA')}"></p>
+            </div>
+            <div class="pixel-card p-6 border-b-4 border-b-[#6ba3c5]">
+                <p class="text-pixel text-[7px] text-[#9c7ac4] mb-3 uppercase">Total Transaksi</p>
+                <p class="text-retro text-3xl text-[#6ba3c5] font-bold" th:text="${totalOrders} + ' Order'"></p>
+            </div>
+            <div class="pixel-card p-6 border-b-4 border-b-[#e8734a]">
+                <p class="text-pixel text-[7px] text-[#9c7ac4] mb-3 uppercase">Tamu Terlayani</p>
+                <p class="text-retro text-3xl text-[#e8734a] font-bold" th:text="${totalMonsters} + ' Monster'"></p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8">
+            <div class="pixel-card p-8">
+                <h3 class="text-pixel text-[9px] mb-8 text-[#ffd96b] uppercase">Popularitas Elemen</h3>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between text-retro text-xl mb-1">
+                            <span>Klan Api</span> <span th:text="${firePct} + '%'">0%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" th:style="'width: ' + ${firePct} + '%; background: #e8734a;'"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-retro text-xl mb-1">
+                            <span>Klan Air</span> <span th:text="${waterPct} + '%'">0%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" th:style="'width: ' + ${waterPct} + '%; background: #6ba3c5;'"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-retro text-xl mb-1">
+                            <span>Klan Tanah</span> <span th:text="${earthPct} + '%'">0%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" th:style="'width: ' + ${earthPct} + '%; background: #85a67a;'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pixel-card p-8">
+                <h3 class="text-pixel text-[9px] mb-8 text-[#ffd96b] uppercase">Log Transaksi Terakhir</h3>
+                <div class="space-y-4 text-retro text-lg max-h-[250px] overflow-y-auto pr-2">
+                    <div th:each="t : ${history}" class="flex flex-col border-l-4 border-[#85a67a] pl-4 py-1 mb-4 bg-[#05020833]">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#ffd96b] font-bold" th:text="${t.name}">Naga</span>
+                            <span class="text-[#9c7ac4] text-sm" th:text="${t.getElement()}">FIRE</span>
+                        </div>
+                        <div class="flex justify-between text-sm opacity-70">
+                            <span th:text="'Kamar ' + ${t.roomId}">Kamar</span>
+                            <span th:text="'Rp ' + ${#numbers.formatDecimal(t.calculateTotalCost(), 0, 'POINT', 0, 'COMMA')}">Harga</span>
+                        </div>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(history)}" class="text-center py-10 opacity-30">
+                        <p class="text-pixel text-[8px]">Belum ada data transaksi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script defer th:src="@{/js/monster-inn-ui.js}"></script>
+</body>
+</html>
