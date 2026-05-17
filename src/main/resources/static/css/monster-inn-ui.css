@@ -836,6 +836,7 @@ input.pixel-input:focus {
 
     .mi-app-shell main {
         padding: 24px !important;
+        margin-left: 0 !important;
     }
 }
 
@@ -919,6 +920,7 @@ input.pixel-input:focus {
 
     .mi-app-shell main {
         padding: 18px !important;
+        margin-left: 0 !important;
     }
 
     .mi-app-shell header,

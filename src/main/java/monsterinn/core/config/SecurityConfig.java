@@ -15,6 +15,10 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login", "/css/**", "/js/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
             )
+            .csrf(csrf -> csrf
+                // Disable CSRF for JSON API endpoints used by fetch()
+                .ignoringRequestMatchers("/api/**", "/service/**")
+            )
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/dashboard", true)

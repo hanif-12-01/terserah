@@ -1,6 +1,7 @@
 package monsterinn.modules.room.model;
 
 import monsterinn.modules.monster.model.Monster;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "rooms")
+@JsonIgnoreProperties({"currentGuest"})
 public class Room {
 
     @Id
