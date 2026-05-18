@@ -1,4 +1,4 @@
-package monsterinn.modules.layanan.controller;
+package monsterinn.modules.service.controller;
 
 import monsterinn.modules.monster.model.Monster;
 import monsterinn.modules.monster.repository.MonsterRepository;
